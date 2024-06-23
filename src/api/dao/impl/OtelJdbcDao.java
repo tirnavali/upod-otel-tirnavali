@@ -1,60 +1,58 @@
 package api.dao.impl;
 
-import api.dao.contract.UserDAO;
+import api.dao.contract.OtelDAO;
 import api.dao.exceptions.DAOException;
 import api.dao.exceptions.EntityCannotFoundException;
+import api.dao.model.Otel;
 import api.dao.model.User;
 
-import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserJdbcDao extends AbstractDao implements UserDAO {
-    private static final String TABLE_NAME = "users";
-    private static final String COL_EMAIL = "email";
-    private static final String COL_PASSWORD = "password";
+public class OtelJdbcDao extends AbstractDao implements OtelDAO {
+    private static final String TABLE_NAME = "otels";
+    private static final String COL_NAME = "name";
     private static final String CREATE = "INSERT INTO " + TABLE_NAME +
-            "("+COL_EMAIL+","+COL_PASSWORD+") VALUES (?,?)";
+            "("+COL_NAME+") VALUES (?)";
     public static final String FIND = "SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_ID + " = ?";
-    //public static final String DELETE = "DELETE FROM "+ TABLE_NAME + " WHERE " + COL_ID + " = ?";
+    public static final String DELETE = "DELETE FROM "+ TABLE_NAME + " WHERE " + COL_ID + " = ?";
     public static final String UPDATE = "UPDATE " + TABLE_NAME + " SET " +
-            COL_EMAIL + " = ?, " +
-            COL_PASSWORD + " = ? WHERE " +
+            COL_NAME + " = ? " +
+            "WHERE " +
             COL_ID +" = ?";
 
-    public UserJdbcDao(Class clazz) {
+    public OtelJdbcDao(Class clazz) {
         super(clazz);
     }
 
+
     @Override
-    public void create(User user) throws DAOException {
+    public void create(Otel otel) throws DAOException {
         try(var conn = getConnection()){
             PreparedStatement stmt = conn.prepareStatement(CREATE);
             conn.setAutoCommit(false);
-            stmt.setString(1, user.getEmail());
-            stmt.setString(2, user.getPassword());
+            stmt.setString(1, otel.getName());
+
             if(stmt.executeUpdate() != 1){
-                throw new DAOException("Error while saving user");
+                throw new DAOException("Error while saving otel");
             };
             conn.commit();
 
         } catch (SQLException e) {
-            throw new DAOException("User cannot be created! ",e);
+            throw new DAOException("Otel cannot be created! ",e);
         }
-
     }
 
 
     @Override
-    public void update(User user) throws DAOException {
+    public void update(Otel otel) throws DAOException {
         try(var conn = getConnection()){
             PreparedStatement stmt = conn.prepareStatement(UPDATE);
-            stmt.setString(1, user.getEmail() );
-            stmt.setString(2, user.getPassword());
-            stmt.setLong(3,user.getId());
+            stmt.setString(1, otel.getName() );
+            stmt.setLong(2, otel.getId());
             var affectedRow = stmt.executeUpdate();
             // conn.commit();
             if(affectedRow == 0){
@@ -66,48 +64,43 @@ public class UserJdbcDao extends AbstractDao implements UserDAO {
     }
 
     @Override
-    public User find(long id) throws DAOException, EntityCannotFoundException {
-        User foundedUser = null;
+    public Otel find(long id) throws DAOException, EntityCannotFoundException {
+        Otel foundedOtel = null;
         try(var conn = getConnection()){
             PreparedStatement stmt = conn.prepareStatement(FIND);
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()){
-                var userId = rs.getLong(COL_ID);
-                var userEmail = rs.getString(COL_EMAIL);
-                var userPass = rs.getString(COL_PASSWORD);
-                foundedUser = new User(userId, userEmail, userPass);
+                var otelId = rs.getLong(COL_ID);
+                var otelName = rs.getString(COL_NAME);
+                foundedOtel = new Otel(otelId, otelName);
 
             }
-            if(foundedUser == null){
+            if(foundedOtel == null){
                 throw new EntityCannotFoundException(TABLE_NAME, String.valueOf(id));
             }
-            return foundedUser;
+            return foundedOtel;
 
         } catch (SQLException e) {
             throw new DAOException(e);
         }
-
     }
 
-    public List<User> getAll() throws DAOException {
-        List<User> users = new ArrayList<User>();
+    @Override
+    public List<Otel> getAll() throws DAOException {
+        List<Otel> otels = new ArrayList<Otel>();
         try(var conn = getConnection()){
             PreparedStatement stmt = conn.prepareStatement("select * from " + TABLE_NAME);
             ResultSet rs = stmt.executeQuery();
             while(rs.next()){
-                User user = new User();
-                user.setId(rs.getInt(COL_ID));
-                user.setEmail(rs.getString(COL_EMAIL));
-                user.setPassword(rs.getString(COL_PASSWORD));
-                users.add(user);
+                Otel otel = new Otel(rs.getString(COL_NAME));
+                otel.setId(rs.getInt(COL_ID));
+                otels.add(otel);
             }
         } catch (SQLException e) {
             throw new DAOException("Error while getAll in " + TABLE_NAME, e);
         }
-        return users;
+        return otels;
     }
-
-
 
 }

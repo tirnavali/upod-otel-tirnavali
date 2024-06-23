@@ -2,8 +2,7 @@ package api.dao.model;
 
 import java.util.Objects;
 
-public class User {
-    long id;
+public class User extends AbstractModel {
     private String email;
     private String password;
 
@@ -17,17 +16,17 @@ public class User {
     }
 
     public User(long id, String email, String password) {
-        this.id = id;
+        super.setId(id);
         this.email = email;
         this.password = password;
     }
 
     public long getId() {
-        return id;
+        return super.getId();
     }
 
     public void setId(long id) {
-        this.id = id;
+        super.setId( id);
     }
 
     public String getEmail() {
@@ -49,7 +48,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + super.getId() +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';

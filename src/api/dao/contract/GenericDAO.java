@@ -7,6 +7,7 @@ import api.dao.exceptions.EntityCannotFoundException;
 import java.util.List;
 
 public interface GenericDAO<T> extends AutoCloseable {
+
     public void create(T t) throws DAOException;
     public void delete(long id) throws DAOException;
     public void update(T t) throws DAOException;

@@ -1,4 +1,6 @@
 package api.dao.contract;
 
-public interface CustomerDAO extends GenericDAO<CustomerDAO> {
+import api.dao.model.Customer;
+
+public interface CustomerDAO extends GenericDAO<Customer> {
 }
