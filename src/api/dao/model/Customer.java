@@ -18,6 +18,14 @@ public class Customer extends AbstractModel{
         this.password = password;
     }
 
+    public Customer( String name, String surname, String email, String password, String phone) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+    }
+
     public Customer(long id, String name, String surname, String email, String password, String phone) {
         super.setId(id);
         this.name = name;

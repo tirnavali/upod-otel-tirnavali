@@ -3,9 +3,7 @@ package api.dao.test;
 import api.dao.exceptions.DAOException;
 import api.dao.exceptions.EntityCannotFoundException;
 import api.dao.impl.OtelJdbcDao;
-import api.dao.impl.UserJdbcDao;
 import api.dao.model.Otel;
-import api.dao.model.User;
 
 public class OtelDaoTest {
     public static void main(String[] args) throws DAOException, EntityCannotFoundException {

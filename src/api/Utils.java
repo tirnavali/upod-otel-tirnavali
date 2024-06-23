@@ -10,6 +10,7 @@ public class Utils {
         tableConverter.put("user", "users");
         tableConverter.put("room", "rooms");
         tableConverter.put("customer", "customers");
+        tableConverter.put("commonroomspeciality", "common_room_specialities");
         System.out.println("utils static loaded");
 
     }

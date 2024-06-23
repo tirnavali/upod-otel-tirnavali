@@ -24,6 +24,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDAO {
             "("+COL_EMAIL+","+COL_PASSWORD+","+ COL_NAME + "," + COL_SURNAME + "," +
         COL_PHONE +") VALUES (?,?,?,?,?)";
     public static final String FIND = "SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_ID + " = ?";
+    public static final String FIND_BY_EMAIL = "SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_EMAIL + "  = ?";
     public static final String UPDATE = "UPDATE " + TABLE_NAME + " SET " +
             COL_EMAIL + " = ?," +
             COL_PASSWORD + " = ?," +
@@ -93,7 +94,7 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDAO {
                 var name = rs.getString(COL_NAME);
                 var surname = rs.getString(COL_SURNAME);
                 var phone = rs.getString(COL_PHONE);
-                customer = new Customer(userId, userEmail, userPass,name,surname,phone);
+                customer = new Customer(userId, name, surname,userEmail,userPass,phone);
 
             }
             if(customer == null){
@@ -130,4 +131,30 @@ public class CustomerJdbcDao extends AbstractDao implements CustomerDAO {
     }
 
 
+    @Override
+    public Customer findByEmail(String query) throws DAOException, EntityCannotFoundException {
+        Customer customer = null;
+        try(var conn = getConnection()){
+            PreparedStatement stmt = conn.prepareStatement(FIND_BY_EMAIL);
+            stmt.setString(1, query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                var userId = rs.getLong(COL_ID);
+                var userEmail = rs.getString(COL_EMAIL);
+                var userPass = rs.getString(COL_PASSWORD);
+                var name = rs.getString(COL_NAME);
+                var surname = rs.getString(COL_SURNAME);
+                var phone = rs.getString(COL_PHONE);
+                customer = new Customer(userId, name, surname,userEmail,userPass,phone);
+
+            }
+            if(customer == null){
+                throw new EntityCannotFoundException(TABLE_NAME, query);
+            }
+            return customer;
+
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
 }
