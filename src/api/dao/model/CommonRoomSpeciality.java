@@ -2,13 +2,23 @@ package api.dao.model;
 
 import java.util.Objects;
 
-public class CommonRoomSpeciality extends AbstractModel{
+public class CommonRoomSpeciality extends AbstractModel<CommonRoomSpeciality>{
     private String speciality;
 
     public CommonRoomSpeciality(long id, String speciality) {
         super.setId(id);
         this.speciality = speciality;
     }
+
+    public CommonRoomSpeciality() {
+    }
+
+    public void setId(int id){
+        super.setId(id);
+    }
+
+
+
     public CommonRoomSpeciality(String speciality) {
         this.speciality = speciality;
     }
@@ -41,4 +51,5 @@ public class CommonRoomSpeciality extends AbstractModel{
     public int hashCode() {
         return Objects.hash(speciality, super.getId());
     }
+
 }

@@ -2,7 +2,7 @@ package api.dao.model;
 
 import java.util.Objects;
 
-public class Customer extends AbstractModel{
+public class Customer extends AbstractModel<Customer>{
     private String name;
     private String surname;
     private String email;
@@ -98,4 +98,6 @@ public class Customer extends AbstractModel{
     public int hashCode() {
         return Objects.hash(email);
     }
+
+
 }

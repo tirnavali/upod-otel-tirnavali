@@ -1,20 +1,13 @@
 package api.dao.impl;
 
-import api.Utils;
 import api.dao.contract.OtelDAO;
 import api.dao.exceptions.DAOException;
-import api.dao.exceptions.EntityCannotFoundException;
 import api.dao.model.Otel;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class OtelJdbcDao extends AbstractDao<Otel> implements OtelDAO {
     private static final String TABLE_NAME = "otels";

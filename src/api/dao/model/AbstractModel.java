@@ -2,7 +2,6 @@ package api.dao.model;
 
 public abstract class AbstractModel<T> {
     private long id;
-
     public long getId() {
         return id;
     }
@@ -10,6 +9,5 @@ public abstract class AbstractModel<T> {
     public void setId(long id) {
         this.id = id;
     }
-
 
 }

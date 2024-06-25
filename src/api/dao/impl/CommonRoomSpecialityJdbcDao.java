@@ -61,28 +61,28 @@ public class CommonRoomSpecialityJdbcDao extends AbstractDao<CommonRoomSpecialit
         }
     }
 
-    @Override
-    public CommonRoomSpeciality find(long id) throws DAOException, EntityCannotFoundException {
-        CommonRoomSpeciality foundedSpec = null;
-        try(var conn = getConnection()){
-            PreparedStatement stmt = conn.prepareStatement(FIND);
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()){
-                var spec_id = rs.getLong(COL_ID);
-                var spec = rs.getString(COL_SPEC);
-                foundedSpec = new CommonRoomSpeciality(spec_id, spec);
-
-            }
-            if(foundedSpec == null){
-                throw new EntityCannotFoundException(TABLE_NAME, String.valueOf(id));
-            }
-            return foundedSpec;
-
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        }
-    }
+//    @Override
+//    public CommonRoomSpeciality find(long id) throws DAOException, EntityCannotFoundException {
+//        CommonRoomSpeciality foundedSpec = null;
+//        try(var conn = getConnection()){
+//            PreparedStatement stmt = conn.prepareStatement(FIND);
+//            stmt.setLong(1, id);
+//            ResultSet rs = stmt.executeQuery();
+//            while (rs.next()){
+//                var spec_id = rs.getLong(COL_ID);
+//                var spec = rs.getString(COL_SPEC);
+//                foundedSpec = new CommonRoomSpeciality(spec_id, spec);
+//
+//            }
+//            if(foundedSpec == null){
+//                throw new EntityCannotFoundException(TABLE_NAME, String.valueOf(id));
+//            }
+//            return foundedSpec;
+//
+//        } catch (SQLException e) {
+//            throw new DAOException(e);
+//        }
+//    }
 
     @Override
     public List<CommonRoomSpeciality> getAll() throws DAOException {

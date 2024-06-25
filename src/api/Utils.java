@@ -5,15 +5,14 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Utils {
-    public static Map<String ,String> tableConverter = new HashMap<>();;
+    public static Map<String ,String> tableConverter = new HashMap<>();
     static{
         tableConverter.put("otel","otels");
         tableConverter.put("user", "users");
         tableConverter.put("room", "rooms");
         tableConverter.put("customer", "customers");
         tableConverter.put("commonroomspeciality", "common_room_specialities");
-        System.out.println("utils static loaded");
-
+//        System.out.println("utils static loaded");
     }
 
     public static String generateMethodNameFromColName(String colName){
@@ -30,14 +29,7 @@ public class Utils {
             case "INT" : return  int.class;
             case "VARCHAR" : return String.class;
             case "DOUBLE" : return double.class;
-
         }
         return null;
-    }
-
-
-
-    public static void main(String[] args) {
-        ;
     }
 }

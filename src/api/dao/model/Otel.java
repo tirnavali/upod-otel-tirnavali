@@ -59,4 +59,6 @@ public class Otel extends AbstractModel<Otel>{
     public int hashCode() {
         return Objects.hash(super.getId(), name);
     }
+
+
 }

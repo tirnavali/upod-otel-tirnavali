@@ -2,7 +2,7 @@ package api.dao.model;
 
 import java.util.Objects;
 
-public class Room extends AbstractModel{
+public class Room extends AbstractModel<Room>{
     private String name;
     private long otelId;
     private int capacity;
@@ -122,4 +122,6 @@ public class Room extends AbstractModel{
     public int hashCode() {
         return Objects.hash(name, otelId);
     }
+
+
 }
