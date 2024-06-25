@@ -21,9 +21,9 @@ public class RoomDaoTest {
 //        var room = dao.find(1);
 //        room.setExtraSpeciality("Çocuk yataklı oda");
 //        dao.update(room);
-//        for (var rm: dao.getAll()) {
-//            System.out.println(rm);
-//        }
+        for (var rm: dao.getAll()) {
+            System.out.println(rm);
+        }
 //        dao.delete(6);
 //        for (var rm: dao.getAll()) {
 //            System.out.println(rm);

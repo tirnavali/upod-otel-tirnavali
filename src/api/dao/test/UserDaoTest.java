@@ -19,9 +19,9 @@ public class UserDaoTest {
 //
 //        System.out.println("---");
 //        userDao.create(new User("tirnavali@gmail.com", "123456"));
-//        var users = userDao.getAll();
-//        for (User u: users) {
-//            System.out.println(u);
-//        }
+        var users = userDao.getAll();
+        for (User u: users) {
+            System.out.println(u);
+        }
     }
 }

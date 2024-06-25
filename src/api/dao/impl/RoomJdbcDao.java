@@ -34,7 +34,7 @@ public class RoomJdbcDao extends AbstractDao<Room> implements RoomDAO {
             "WHERE " +
             COL_ID +" = ?";
 
-    public static final String FIND = "SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_ID + " = ?";
+    //public static final String FIND = "SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_ID + " = ?";
     public RoomJdbcDao(Class clazz) {
         super(clazz);
     }
@@ -81,55 +81,26 @@ public class RoomJdbcDao extends AbstractDao<Room> implements RoomDAO {
             throw new DAOException("Update cannot be done ", e);
         }
     }
-
 //    @Override
-//    public Room find(long id) throws DAOException, EntityCannotFoundException {
-//        Room foundedRoom = null;
+//    public List<Room> getAll() throws DAOException {
+//        List<Room> rooms = new ArrayList<Room>();
 //        try(var conn = getConnection()){
-//            PreparedStatement stmt = conn.prepareStatement(FIND);
-//            stmt.setLong(1, id);
+//            PreparedStatement stmt = conn.prepareStatement("select * from " + TABLE_NAME);
 //            ResultSet rs = stmt.executeQuery();
-//            while (rs.next()){
-//                var roomId = rs.getLong(COL_ID);
-//                var otelId = rs.getLong(COL_OTEL_ID);
-//                var name = rs.getString(COL_NAME);
-//                var capacity = rs.getInt(COL_CAPACITY);
-//                var price = rs.getDouble(COL_PRICE);
-//                var extraSpec = rs.getString(COL_EX_SPEC);
-//                var commonSpecId = rs.getLong(COL_COMMON_ROOM_SPEC_ID);
-//                foundedRoom = new Room(roomId, name, otelId, capacity, price, extraSpec, commonSpecId);
-//
+//            while(rs.next()){
+//                Room room = new Room();
+//                room.setId(rs.getInt(COL_ID));
+//                room.setOtelId(rs.getInt(COL_OTEL_ID));
+//                room.setName(rs.getString(COL_NAME));
+//                room.setCapacity(rs.getInt(COL_CAPACITY));
+//                room.setDailyPrice(rs.getDouble(COL_PRICE));
+//                room.setExtraSpeciality(rs.getString(COL_EX_SPEC));
+//                room.setCommonRoomSpecialityId(rs.getLong(COL_COMMON_ROOM_SPEC_ID));
+//                rooms.add(room);
 //            }
-//            if(foundedRoom == null){
-//                throw new EntityCannotFoundException(TABLE_NAME, String.valueOf(id));
-//            }
-//            return foundedRoom;
-//
 //        } catch (SQLException e) {
-//            throw new DAOException(e);
+//            throw new DAOException("Error while getAll in " + TABLE_NAME, e);
 //        }
+//        return rooms;
 //    }
-
-    @Override
-    public List<Room> getAll() throws DAOException {
-        List<Room> rooms = new ArrayList<Room>();
-        try(var conn = getConnection()){
-            PreparedStatement stmt = conn.prepareStatement("select * from " + TABLE_NAME);
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                Room room = new Room();
-                room.setId(rs.getInt(COL_ID));
-                room.setOtelId(rs.getInt(COL_OTEL_ID));
-                room.setName(rs.getString(COL_NAME));
-                room.setCapacity(rs.getInt(COL_CAPACITY));
-                room.setDailyPrice(rs.getDouble(COL_PRICE));
-                room.setExtraSpeciality(rs.getString(COL_EX_SPEC));
-                room.setCommonRoomSpecialityId(rs.getLong(COL_COMMON_ROOM_SPEC_ID));
-                rooms.add(room);
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error while getAll in " + TABLE_NAME, e);
-        }
-        return rooms;
-    }
 }

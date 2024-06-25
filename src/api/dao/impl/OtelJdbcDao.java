@@ -4,18 +4,13 @@ import api.dao.contract.OtelDAO;
 import api.dao.exceptions.DAOException;
 import api.dao.model.Otel;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class OtelJdbcDao extends AbstractDao<Otel> implements OtelDAO {
     private static final String TABLE_NAME = "otels";
     private static final String COL_NAME = "name";
     private static final String CREATE = "INSERT INTO " + TABLE_NAME +
             "("+COL_NAME+") VALUES (?)";
-    public static final String FIND = "SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_ID + " = ?";
-    public static final String DELETE = "DELETE FROM "+ TABLE_NAME + " WHERE " + COL_ID + " = ?";
     public static final String UPDATE = "UPDATE " + TABLE_NAME + " SET " +
             COL_NAME + " = ? " +
             "WHERE " +
@@ -42,8 +37,6 @@ public class OtelJdbcDao extends AbstractDao<Otel> implements OtelDAO {
             throw new DAOException( super.getClazzName() + " cannot be created! ",e);
         }
     }
-
-
     @Override
     public void update(Otel otel) throws DAOException {
         try(var conn = getConnection()){
@@ -59,6 +52,4 @@ public class OtelJdbcDao extends AbstractDao<Otel> implements OtelDAO {
             throw new DAOException("Update cannot be done ", e);
         }
     }
-
-
 }

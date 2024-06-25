@@ -56,12 +56,13 @@ public abstract class AbstractDao<T> {
         List<T> objects = new ArrayList<T>();
         try(var conn = getConnection()){
             var constructor = getClazz().getDeclaredConstructor();
-            var obj = constructor.newInstance();
+//            var obj = constructor.newInstance();
             PreparedStatement stmt = conn.prepareStatement("select * from " + tableName);
             ResultSet rs = stmt.executeQuery();
             ResultSetMetaData meta = rs.getMetaData();
             var colCount = meta.getColumnCount();
             while(rs.next()){
+                var obj = constructor.newInstance();
                 for (int i =1 ; i <= colCount ; i ++) {
                     var colName = meta.getColumnName(i);
                     var methodName = Utils.generateMethodNameFromColName(meta.getColumnName(i));
@@ -150,7 +151,6 @@ public abstract class AbstractDao<T> {
         }else if (colObj == double.class) {
             rowValue = rs.getDouble(colName);
         }
-
         return rowValue;
     }
 
