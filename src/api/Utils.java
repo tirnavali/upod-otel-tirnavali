@@ -15,6 +15,7 @@ public class Utils {
         tableConverter.put("commonroomspeciality", "common_room_specialities");
         tableConverter.put("roomservice", "room_services");
         tableConverter.put("reservation", "reservations");
+        tableConverter.put("reservationroomservice", "reservations_room_services");
 //        System.out.println("utils static loaded");
     }
 

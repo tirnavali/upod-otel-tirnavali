@@ -60,6 +60,23 @@ public class ReservationJdbcDao extends AbstractDao<Reservation> implements Rese
 
     @Override
     public void update(Reservation reservation) throws DAOException {
-
+        try(var conn = getConnection()){
+            PreparedStatement stmt = conn.prepareStatement(UPDATE);
+            stmt.setLong(1, reservation.getCustomerId() );
+            stmt.setLong(2, reservation.getRoomId() );
+            stmt.setDouble(3, reservation.getFixedPrice() );
+            stmt.setDate(4, new Date(reservation.getEntranceDate().getTime()));
+            stmt.setDate(5, new Date(reservation.getLeaveDate().getTime()) );
+            stmt.setDate(6, reservation.getCheckInDate() != null ? new Date(reservation.getCheckInDate().getTime()) : null);
+            stmt.setDate(7, reservation.getCheckOutDate() != null ? new Date(reservation.getCheckOutDate().getTime()) : null);
+            stmt.setLong(8, reservation.getId());
+            var affectedRow = stmt.executeUpdate();
+            // conn.commit();
+            if(affectedRow == 0){
+                throw new DAOException("Update can not be done in " + getClazzName() );
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Update cannot be done in " + getClazzName(), e);
+        }
     }
 }

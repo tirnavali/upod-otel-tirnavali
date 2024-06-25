@@ -15,7 +15,6 @@ public abstract class AbstractDao<T> {
     private String tableName;
     protected Connection connection;
     static final String COL_ID ="id";
-    //public static final String DELETE = "DELETE FROM "+ "TABLE_NAME" + " WHERE " + COL_ID + " = ?";
     public Connection getConnection(){
         connection = OtelDriverManager.getConnection();
         return connection;
@@ -25,7 +24,6 @@ public abstract class AbstractDao<T> {
         this.model = clazz;
         Type superClass = getClass().getGenericSuperclass();
         System.out.println(superClass.getTypeName());
-        //this.model = (superClass).getTypeName();
         this.tableName = Utils.tableConverter.get( getClazzName());
     }
 
@@ -36,10 +34,9 @@ public abstract class AbstractDao<T> {
     }
 
     public String getClazzName() {
-        System.out.println("inside get clazz namez");
-        System.out.println(model.getSimpleName().toLowerCase());
+//        System.out.println("inside get clazz namez");
+//        System.out.println(model.getSimpleName().toLowerCase());
         return this.model.getSimpleName().toLowerCase();
-        //return this.model;
     }
 
     public List<T> getAll() throws DAOException {
@@ -90,21 +87,19 @@ public abstract class AbstractDao<T> {
 
             ResultSetMetaData meta = rs.getMetaData();
             var colCount = meta.getColumnCount();
-            System.out.println("Col count : " + colCount);
             var getIdMethod = ot.getClass().getMethod("getId");
             while(rs.next()){
                 for (int i =1 ; i <= colCount ; i ++) {
-                    System.out.println("i . is : " + i);
                     var colName = meta.getColumnName(i);
                     var methodName = Utils.generateMethodNameFromColName(meta.getColumnName(i));
-                    System.out.println("Method name : " + methodName);
+//                    System.out.println("Method name : " + methodName);
                     var colObj = Utils.generateTypeFromString(meta.getColumnTypeName(i));
-                    System.out.println(colObj);
+//                    System.out.println(colObj);
                     var method = ot.getClass().getMethod(methodName, colObj);
                     Object rowValue = generateObjectFromResultSet(rs, colObj, colName);
                     method.invoke(ot, rowValue);
                     getIdMethod.invoke(ot);
-                    System.out.println("ot IId : " + getIdMethod.invoke(ot).toString());
+//                    System.out.println("ot IId : " + getIdMethod.invoke(ot).toString());
                 }
             }
             var getIdResult = getIdMethod.invoke(ot);
