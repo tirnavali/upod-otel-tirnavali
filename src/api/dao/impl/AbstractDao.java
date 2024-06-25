@@ -42,7 +42,6 @@ public abstract class AbstractDao<T> {
         //return this.model;
     }
 
-
     public List<T> getAll() throws DAOException {
         List<T> objects = new ArrayList<T>();
         try(var conn = getConnection()){
@@ -131,8 +130,10 @@ public abstract class AbstractDao<T> {
             rowValue = rs.getInt(colName);
         } else if (colObj == String.class) {
             rowValue = rs.getString(colName);
-        }else if (colObj == double.class) {
+        } else if (colObj == double.class) {
             rowValue = rs.getDouble(colName);
+        } else if (colObj == java.sql.Date.class) {
+            rowValue = rs.getDate(colName);
         }
         return rowValue;
     }

@@ -1,5 +1,6 @@
 package api;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -12,6 +13,8 @@ public class Utils {
         tableConverter.put("room", "rooms");
         tableConverter.put("customer", "customers");
         tableConverter.put("commonroomspeciality", "common_room_specialities");
+        tableConverter.put("roomservice", "room_services");
+        tableConverter.put("reservation", "reservations");
 //        System.out.println("utils static loaded");
     }
 
@@ -29,6 +32,7 @@ public class Utils {
             case "INT" : return  int.class;
             case "VARCHAR" : return String.class;
             case "DOUBLE" : return double.class;
+            case "DATETIME" : return java.sql.Date.class;
         }
         return null;
     }

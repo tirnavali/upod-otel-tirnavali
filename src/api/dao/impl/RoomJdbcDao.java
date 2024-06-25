@@ -2,13 +2,9 @@ package api.dao.impl;
 
 import api.dao.contract.RoomDAO;
 import api.dao.exceptions.DAOException;
-import api.dao.exceptions.EntityCannotFoundException;
 import api.dao.model.Room;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RoomJdbcDao extends AbstractDao<Room> implements RoomDAO {
     private static final String TABLE_NAME = "rooms";
