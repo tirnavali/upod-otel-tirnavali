@@ -1,6 +1,6 @@
 package api.dao.model;
 
-public abstract class AbstractModel {
+public abstract class AbstractModel<T> {
     private long id;
 
     public long getId() {

@@ -28,6 +28,11 @@ public class User extends AbstractModel {
     public void setId(long id) {
         super.setId( id);
     }
+    public void setId(int id) {
+        super.setId( id);
+    }public void setId(Integer id) {
+        super.setId( id);
+    }
 
     public String getEmail() {
         return email;

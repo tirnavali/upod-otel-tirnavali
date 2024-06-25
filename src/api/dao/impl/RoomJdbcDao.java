@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomJdbcDao extends AbstractDao implements RoomDAO {
+public class RoomJdbcDao extends AbstractDao<Room> implements RoomDAO {
     private static final String TABLE_NAME = "rooms";
     private static final String COL_OTEL_ID = "otelId";
     private static final String COL_NAME = "name";
@@ -82,33 +82,33 @@ public class RoomJdbcDao extends AbstractDao implements RoomDAO {
         }
     }
 
-    @Override
-    public Room find(long id) throws DAOException, EntityCannotFoundException {
-        Room foundedRoom = null;
-        try(var conn = getConnection()){
-            PreparedStatement stmt = conn.prepareStatement(FIND);
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()){
-                var roomId = rs.getLong(COL_ID);
-                var otelId = rs.getLong(COL_OTEL_ID);
-                var name = rs.getString(COL_NAME);
-                var capacity = rs.getInt(COL_CAPACITY);
-                var price = rs.getDouble(COL_PRICE);
-                var extraSpec = rs.getString(COL_EX_SPEC);
-                var commonSpecId = rs.getLong(COL_COMMON_ROOM_SPEC_ID);
-                foundedRoom = new Room(roomId, name, otelId, capacity, price, extraSpec, commonSpecId);
-
-            }
-            if(foundedRoom == null){
-                throw new EntityCannotFoundException(TABLE_NAME, String.valueOf(id));
-            }
-            return foundedRoom;
-
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        }
-    }
+//    @Override
+//    public Room find(long id) throws DAOException, EntityCannotFoundException {
+//        Room foundedRoom = null;
+//        try(var conn = getConnection()){
+//            PreparedStatement stmt = conn.prepareStatement(FIND);
+//            stmt.setLong(1, id);
+//            ResultSet rs = stmt.executeQuery();
+//            while (rs.next()){
+//                var roomId = rs.getLong(COL_ID);
+//                var otelId = rs.getLong(COL_OTEL_ID);
+//                var name = rs.getString(COL_NAME);
+//                var capacity = rs.getInt(COL_CAPACITY);
+//                var price = rs.getDouble(COL_PRICE);
+//                var extraSpec = rs.getString(COL_EX_SPEC);
+//                var commonSpecId = rs.getLong(COL_COMMON_ROOM_SPEC_ID);
+//                foundedRoom = new Room(roomId, name, otelId, capacity, price, extraSpec, commonSpecId);
+//
+//            }
+//            if(foundedRoom == null){
+//                throw new EntityCannotFoundException(TABLE_NAME, String.valueOf(id));
+//            }
+//            return foundedRoom;
+//
+//        } catch (SQLException e) {
+//            throw new DAOException(e);
+//        }
+//    }
 
     @Override
     public List<Room> getAll() throws DAOException {

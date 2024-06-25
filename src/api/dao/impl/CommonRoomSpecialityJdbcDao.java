@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommonRoomSpecialityJdbcDao extends AbstractDao implements CommonRoomSpecialtyDAO {
+public class CommonRoomSpecialityJdbcDao extends AbstractDao<CommonRoomSpeciality> implements CommonRoomSpecialtyDAO {
     private static final String TABLE_NAME = "common_room_specialities";
     private static final String COL_SPEC = "speciality";
 

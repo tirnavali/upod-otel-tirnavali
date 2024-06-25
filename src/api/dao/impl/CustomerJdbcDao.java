@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerJdbcDao extends AbstractDao implements CustomerDAO {
+public class CustomerJdbcDao extends AbstractDao<Customer> implements CustomerDAO {
     private static final String TABLE_NAME = "customers";
     private static final String COL_EMAIL = "email";
     private static final String COL_PASSWORD = "password";

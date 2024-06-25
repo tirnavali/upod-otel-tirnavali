@@ -2,8 +2,11 @@ package api.dao.model;
 
 import java.util.Objects;
 
-public class Otel extends AbstractModel{
+public class Otel extends AbstractModel<Otel>{
     private String name;
+
+    public Otel() {
+    }
 
     public Otel(String name){
         this.name = name;
@@ -17,7 +20,14 @@ public class Otel extends AbstractModel{
         return super.getId();
     }
 
+
     public void setId(long id) {
+        super.setId(id);
+    }
+    public void setId(int id) {
+        super.setId(id);
+    }
+    public void setId(Integer id) {
         super.setId(id);
     }
 

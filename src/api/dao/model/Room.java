@@ -32,6 +32,18 @@ public class Room extends AbstractModel{
         this.commonRoomSpecialityId = commonRoomSpecialityId;
     }
 
+    public long getId(){
+        return super.getId();
+    }
+
+    public void setId(long id){
+        super.setId(id);
+    } public void setId(int id){
+        super.setId(id);
+    } public void setId(Integer id){
+        super.setId(id);
+    }
+
     public String getName() {
         return name;
     }
@@ -47,6 +59,7 @@ public class Room extends AbstractModel{
     public void setOtelId(int otelId) {
         this.otelId = otelId;
     }
+
 
     public int getCapacity() {
         return capacity;
@@ -77,6 +90,10 @@ public class Room extends AbstractModel{
     }
 
     public void setCommonRoomSpecialityId(long commonRoomSpecialityId) {
+        this.commonRoomSpecialityId = commonRoomSpecialityId;
+    }
+
+    public void setCommonRoomSpecialityId(int commonRoomSpecialityId) {
         this.commonRoomSpecialityId = commonRoomSpecialityId;
     }
 

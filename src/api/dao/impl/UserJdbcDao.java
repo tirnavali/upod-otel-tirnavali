@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserJdbcDao extends AbstractDao implements UserDAO {
+public class UserJdbcDao extends AbstractDao<User> implements UserDAO {
     private static final String TABLE_NAME = "users";
     private static final String COL_EMAIL = "email";
     private static final String COL_PASSWORD = "password";
@@ -65,30 +65,30 @@ public class UserJdbcDao extends AbstractDao implements UserDAO {
         }
     }
 
-    @Override
-    public User find(long id) throws DAOException, EntityCannotFoundException {
-        User foundedUser = null;
-        try(var conn = getConnection()){
-            PreparedStatement stmt = conn.prepareStatement(FIND);
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()){
-                var userId = rs.getLong(COL_ID);
-                var userEmail = rs.getString(COL_EMAIL);
-                var userPass = rs.getString(COL_PASSWORD);
-                foundedUser = new User(userId, userEmail, userPass);
-
-            }
-            if(foundedUser == null){
-                throw new EntityCannotFoundException(TABLE_NAME, String.valueOf(id));
-            }
-            return foundedUser;
-
-        } catch (SQLException e) {
-            throw new DAOException(e);
-        }
-
-    }
+//    @Override
+//    public User find(long id) throws DAOException, EntityCannotFoundException {
+//        User foundedUser = null;
+//        try(var conn = getConnection()){
+//            PreparedStatement stmt = conn.prepareStatement(FIND);
+//            stmt.setLong(1, id);
+//            ResultSet rs = stmt.executeQuery();
+//            while (rs.next()){
+//                var userId = rs.getLong(COL_ID);
+//                var userEmail = rs.getString(COL_EMAIL);
+//                var userPass = rs.getString(COL_PASSWORD);
+//                foundedUser = new User(userId, userEmail, userPass);
+//
+//            }
+//            if(foundedUser == null){
+//                throw new EntityCannotFoundException(TABLE_NAME, String.valueOf(id));
+//            }
+//            return foundedUser;
+//
+//        } catch (SQLException e) {
+//            throw new DAOException(e);
+//        }
+//
+//    }
 
     public List<User> getAll() throws DAOException {
         List<User> users = new ArrayList<User>();

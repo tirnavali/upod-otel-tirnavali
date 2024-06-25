@@ -1,18 +1,22 @@
 package api.dao.impl;
 
+import api.Utils;
 import api.dao.contract.OtelDAO;
 import api.dao.exceptions.DAOException;
 import api.dao.exceptions.EntityCannotFoundException;
 import api.dao.model.Otel;
-import api.dao.model.User;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class OtelJdbcDao extends AbstractDao implements OtelDAO {
+public class OtelJdbcDao extends AbstractDao<Otel> implements OtelDAO {
     private static final String TABLE_NAME = "otels";
     private static final String COL_NAME = "name";
     private static final String CREATE = "INSERT INTO " + TABLE_NAME +
@@ -28,12 +32,12 @@ public class OtelJdbcDao extends AbstractDao implements OtelDAO {
         super(clazz);
     }
 
-
     @Override
     public void create(Otel otel) throws DAOException {
         try(var conn = getConnection()){
             PreparedStatement stmt = conn.prepareStatement(CREATE);
             conn.setAutoCommit(false);
+
             stmt.setString(1, otel.getName());
 
             if(stmt.executeUpdate() != 1){
@@ -60,29 +64,6 @@ public class OtelJdbcDao extends AbstractDao implements OtelDAO {
             }
         } catch (SQLException e) {
             throw new DAOException("Update cannot be done ", e);
-        }
-    }
-
-    @Override
-    public Otel find(long id) throws DAOException, EntityCannotFoundException {
-        Otel foundedOtel = null;
-        try(var conn = getConnection()){
-            PreparedStatement stmt = conn.prepareStatement(FIND);
-            stmt.setLong(1, id);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()){
-                var otelId = rs.getLong(COL_ID);
-                var otelName = rs.getString(COL_NAME);
-                foundedOtel = new Otel(otelId, otelName);
-
-            }
-            if(foundedOtel == null){
-                throw new EntityCannotFoundException(TABLE_NAME, String.valueOf(id));
-            }
-            return foundedOtel;
-
-        } catch (SQLException e) {
-            throw new DAOException(e);
         }
     }
 
