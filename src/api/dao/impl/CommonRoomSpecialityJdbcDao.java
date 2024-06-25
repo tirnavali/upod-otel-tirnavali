@@ -84,20 +84,20 @@ public class CommonRoomSpecialityJdbcDao extends AbstractDao<CommonRoomSpecialit
 //        }
 //    }
 
-    @Override
-    public List<CommonRoomSpeciality> getAll() throws DAOException {
-        List<CommonRoomSpeciality> specs = new ArrayList<CommonRoomSpeciality>();
-        try(var conn = getConnection()){
-            PreparedStatement stmt = conn.prepareStatement("select * from " + TABLE_NAME);
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                CommonRoomSpeciality spec = new CommonRoomSpeciality(rs.getString(COL_SPEC));
-                spec.setId(rs.getInt(COL_ID));
-                specs.add(spec);
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error while getAll in " + TABLE_NAME, e);
-        }
-        return specs;
-    }
+//    @Override
+//    public List<CommonRoomSpeciality> getAll() throws DAOException {
+//        List<CommonRoomSpeciality> specs = new ArrayList<CommonRoomSpeciality>();
+//        try(var conn = getConnection()){
+//            PreparedStatement stmt = conn.prepareStatement("select * from " + TABLE_NAME);
+//            ResultSet rs = stmt.executeQuery();
+//            while(rs.next()){
+//                CommonRoomSpeciality spec = new CommonRoomSpeciality(rs.getString(COL_SPEC));
+//                spec.setId(rs.getInt(COL_ID));
+//                specs.add(spec);
+//            }
+//        } catch (SQLException e) {
+//            throw new DAOException("Error while getAll in " + TABLE_NAME, e);
+//        }
+//        return specs;
+//    }
 }

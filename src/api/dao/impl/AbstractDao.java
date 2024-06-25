@@ -4,8 +4,6 @@ import api.Utils;
 import api.dao.OtelDriverManager;
 import api.dao.exceptions.DAOException;
 import api.dao.exceptions.EntityCannotFoundException;
-import api.dao.model.Otel;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.sql.*;
@@ -37,12 +35,6 @@ public abstract class AbstractDao<T> {
         return this.model;
     }
 
-    public Class<T> getClazzType() {
-        System.out.println("inside get clazzz");
-        System.out.println(this.model.getClass());
-        return this.model;
-    }
-
     public String getClazzName() {
         System.out.println("inside get clazz namez");
         System.out.println(model.getSimpleName().toLowerCase());
@@ -52,7 +44,6 @@ public abstract class AbstractDao<T> {
 
 
     public List<T> getAll() throws DAOException {
-        var clazz = getClazzType();
         List<T> objects = new ArrayList<T>();
         try(var conn = getConnection()){
             var constructor = getClazz().getDeclaredConstructor();
@@ -112,18 +103,10 @@ public abstract class AbstractDao<T> {
                     System.out.println(colObj);
                     var method = ot.getClass().getMethod(methodName, colObj);
                     Object rowValue = generateObjectFromResultSet(rs, colObj, colName);
-//                    if (colObj == int.class) {
-//                        rowValue = rs.getInt(colName);
-//                    } else if (colObj == String.class) {
-//                        rowValue = rs.getString(colName);
-//                    }else if (colObj == double.class) {
-//                        rowValue = rs.getDouble(colName);
-//                    }
                     method.invoke(ot, rowValue);
                     getIdMethod.invoke(ot);
                     System.out.println("ot IId : " + getIdMethod.invoke(ot).toString());
                 }
-
             }
             var getIdResult = getIdMethod.invoke(ot);
             if((long)getIdResult == 0){
