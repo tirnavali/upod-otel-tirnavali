@@ -60,21 +60,5 @@ public class OtelJdbcDao extends AbstractDao<Otel> implements OtelDAO {
         }
     }
 
-    @Override
-    public List<Otel> getAll() throws DAOException {
-        List<Otel> otels = new ArrayList<Otel>();
-        try(var conn = getConnection()){
-            PreparedStatement stmt = conn.prepareStatement("select * from " + TABLE_NAME);
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                Otel otel = new Otel(rs.getString(COL_NAME));
-                otel.setId(rs.getInt(COL_ID));
-                otels.add(otel);
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error while getAll in " + TABLE_NAME, e);
-        }
-        return otels;
-    }
 
 }

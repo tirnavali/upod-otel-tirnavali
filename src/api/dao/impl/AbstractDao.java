@@ -4,9 +4,13 @@ import api.Utils;
 import api.dao.OtelDriverManager;
 import api.dao.exceptions.DAOException;
 import api.dao.exceptions.EntityCannotFoundException;
+import api.dao.model.Otel;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractDao<T> {
     private Class<T> model;
@@ -46,6 +50,42 @@ public abstract class AbstractDao<T> {
         //return this.model;
     }
 
+
+    public List<T> getAll() throws DAOException {
+        var clazz = getClazzType();
+        List<T> objects = new ArrayList<T>();
+        try(var conn = getConnection()){
+            var constructor = getClazz().getDeclaredConstructor();
+            var obj = constructor.newInstance();
+            PreparedStatement stmt = conn.prepareStatement("select * from " + tableName);
+            ResultSet rs = stmt.executeQuery();
+            ResultSetMetaData meta = rs.getMetaData();
+            var colCount = meta.getColumnCount();
+            while(rs.next()){
+                for (int i =1 ; i <= colCount ; i ++) {
+                    var colName = meta.getColumnName(i);
+                    var methodName = Utils.generateMethodNameFromColName(meta.getColumnName(i));
+                    var colObj = Utils.generateTypeFromString(meta.getColumnTypeName(i));
+                    var method = obj.getClass().getMethod(methodName, colObj);
+                    Object rowValue = generateObjectFromResultSet(rs, colObj, colName);
+                    method.invoke(obj, rowValue);
+                }
+                objects.add(obj);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while getAll in " + tableName, e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return objects;
+    }
+
     public T find(long id) throws DAOException, EntityCannotFoundException {
         String findQuery = "SELECT * FROM "+ tableName + " WHERE " + COL_ID + " = ?";
 
@@ -61,7 +101,7 @@ public abstract class AbstractDao<T> {
             var colCount = meta.getColumnCount();
             System.out.println("Col count : " + colCount);
             var getIdMethod = ot.getClass().getMethod("getId");
-            if(rs.next()){
+            while(rs.next()){
                 for (int i =1 ; i <= colCount ; i ++) {
                     System.out.println("i . is : " + i);
                     var colName = meta.getColumnName(i);
@@ -70,14 +110,14 @@ public abstract class AbstractDao<T> {
                     var colObj = Utils.generateTypeFromString(meta.getColumnTypeName(i));
                     System.out.println(colObj);
                     var method = ot.getClass().getMethod(methodName, colObj);
-                    Object rowValue = new Object();
-                    if (colObj == int.class) {
-                        rowValue = rs.getInt(colName);
-                    } else if (colObj == String.class) {
-                        rowValue = rs.getString(colName);
-                    }else if (colObj == double.class) {
-                        rowValue = rs.getDouble(colName);
-                    }
+                    Object rowValue = generateObjectFromResultSet(rs, colObj, colName);
+//                    if (colObj == int.class) {
+//                        rowValue = rs.getInt(colName);
+//                    } else if (colObj == String.class) {
+//                        rowValue = rs.getString(colName);
+//                    }else if (colObj == double.class) {
+//                        rowValue = rs.getDouble(colName);
+//                    }
                     method.invoke(ot, rowValue);
                     getIdMethod.invoke(ot);
                     System.out.println("ot IId : " + getIdMethod.invoke(ot).toString());
@@ -100,6 +140,20 @@ public abstract class AbstractDao<T> {
             throw new RuntimeException(e);
         }
     }
+
+    private Object generateObjectFromResultSet(ResultSet rs, Class colObj, String colName) throws SQLException {
+        Object rowValue = new Object();
+        if (colObj == int.class) {
+            rowValue = rs.getInt(colName);
+        } else if (colObj == String.class) {
+            rowValue = rs.getString(colName);
+        }else if (colObj == double.class) {
+            rowValue = rs.getDouble(colName);
+        }
+
+        return rowValue;
+    }
+
 
     public void delete(long id) throws DAOException {
         try(var conn = getConnection()){

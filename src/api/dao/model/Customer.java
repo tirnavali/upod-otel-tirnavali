@@ -35,6 +35,10 @@ public class Customer extends AbstractModel<Customer>{
         this.phone = phone;
     }
 
+    public void setId(int id){
+        super.setId(id);
+    }
+
     public String getName() {
         return name;
     }

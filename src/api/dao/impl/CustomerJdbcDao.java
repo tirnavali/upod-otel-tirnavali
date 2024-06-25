@@ -79,58 +79,6 @@ public class CustomerJdbcDao extends AbstractDao<Customer> implements CustomerDA
             throw new DAOException("Update cannot be done ", e);
         }
     }
-
-//    @Override
-//    public Customer find(long id) throws DAOException, EntityCannotFoundException {
-//        Customer customer = null;
-//        try(var conn = getConnection()){
-//            PreparedStatement stmt = conn.prepareStatement(FIND);
-//            stmt.setLong(1, id);
-//            ResultSet rs = stmt.executeQuery();
-//            while (rs.next()){
-//                var userId = rs.getLong(COL_ID);
-//                var userEmail = rs.getString(COL_EMAIL);
-//                var userPass = rs.getString(COL_PASSWORD);
-//                var name = rs.getString(COL_NAME);
-//                var surname = rs.getString(COL_SURNAME);
-//                var phone = rs.getString(COL_PHONE);
-//                customer = new Customer(userId, name, surname,userEmail,userPass,phone);
-//
-//            }
-//            if(customer == null){
-//                throw new EntityCannotFoundException(TABLE_NAME, String.valueOf(id));
-//            }
-//            return customer;
-//
-//        } catch (SQLException e) {
-//            throw new DAOException(e);
-//        }
-//
-//    }
-
-    @Override
-    public List<Customer> getAll() throws DAOException {
-        List<Customer> customers = new ArrayList<Customer>();
-        try(var conn = getConnection()){
-            PreparedStatement stmt = conn.prepareStatement("select * from " + TABLE_NAME);
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()){
-                Customer customer = new Customer();
-                customer.setId(rs.getInt(COL_ID));
-                customer.setEmail(rs.getString(COL_EMAIL));
-                customer.setPassword(rs.getString(COL_PASSWORD));
-                customer.setName(rs.getString(COL_NAME));
-                customer.setSurname(rs.getString(COL_SURNAME));
-                customer.setPhone(rs.getString(COL_PHONE));
-                customers.add(customer);
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error while getAll in " + TABLE_NAME, e);
-        }
-        return customers;
-    }
-
-
     @Override
     public Customer findByEmail(String query) throws DAOException, EntityCannotFoundException {
         Customer customer = null;
