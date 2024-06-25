@@ -25,7 +25,7 @@ public class OtelDriverManager {
 
 
     static void createConnection(){
-        System.out.println("Using Class.forName() to load driver!");
+//        System.out.println("Using Class.forName() to load driver!");
 
         try{
             Class clazz = Class.forName("com.mysql.cj.jdbc.Driver");

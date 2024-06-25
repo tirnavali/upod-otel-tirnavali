@@ -3,6 +3,7 @@ package api.dao.impl;
 import api.dao.contract.UserDAO;
 import api.dao.exceptions.DAOException;
 import api.dao.exceptions.EntityCannotFoundException;
+import api.dao.model.Customer;
 import api.dao.model.User;
 
 import javax.xml.crypto.dsig.spec.XSLTTransformParameterSpec;
@@ -18,7 +19,7 @@ public class UserJdbcDao extends AbstractDao<User> implements UserDAO {
     private static final String COL_PASSWORD = "password";
     private static final String CREATE = "INSERT INTO " + TABLE_NAME +
             "("+COL_EMAIL+","+COL_PASSWORD+") VALUES (?,?)";
-    public static final String FIND = "SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_ID + " = ?";
+    public static final String FIND_BY_EMAIL = "SELECT * FROM "+ TABLE_NAME + " WHERE " + COL_EMAIL + " = ?";
     //public static final String DELETE = "DELETE FROM "+ TABLE_NAME + " WHERE " + COL_ID + " = ?";
     public static final String UPDATE = "UPDATE " + TABLE_NAME + " SET " +
             COL_EMAIL + " = ?, " +
@@ -62,6 +63,30 @@ public class UserJdbcDao extends AbstractDao<User> implements UserDAO {
             }
         } catch (SQLException e) {
             throw new DAOException("Update cannot be done ", e);
+        }
+    }
+
+    @Override
+    public User findByEmail(String query) throws DAOException, EntityCannotFoundException {
+        User user = null;
+        try(var conn = getConnection()){
+            PreparedStatement stmt = conn.prepareStatement(FIND_BY_EMAIL);
+            stmt.setString(1, query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                var id = rs.getLong(COL_ID);
+                var userEmail = rs.getString(COL_EMAIL);
+                var userPass = rs.getString(COL_PASSWORD);
+                user = new User(id, userEmail, userPass );
+
+            }
+            if(user == null){
+                throw new EntityCannotFoundException(TABLE_NAME, query);
+            }
+            return user;
+
+        } catch (SQLException e) {
+            throw new DAOException(e);
         }
     }
 }

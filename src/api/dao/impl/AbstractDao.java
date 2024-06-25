@@ -23,7 +23,7 @@ public abstract class AbstractDao<T> {
     protected AbstractDao(Class<T> clazz){
         this.model = clazz;
         Type superClass = getClass().getGenericSuperclass();
-        System.out.println(superClass.getTypeName());
+//        System.out.println(superClass.getTypeName());
         this.tableName = Utils.tableConverter.get( getClazzName());
     }
 
